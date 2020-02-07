@@ -1,0 +1,57 @@
+From f7fda0a09d9cada668659da8e7d6bf8b30751b8c Mon Sep 17 00:00:00 2001
+From: Ryan M Sullivan <Deffpatch@gmail.com>
+Date: Fri, 7 Feb 2020 10:22:40 -0800
+Subject: [PATCH] Twelfth patch
+
+---
+ x.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/x.c b/x.c
+index 0105fce..033c9a6 100644
+--- a/x.c
++++ b/x.c
+@@ -85,6 +85,7 @@ typedef struct {
+ 	int hborderpx, vborderpx;
+ 	int ch; /* char height */
+ 	int cw; /* char width  */
++	int cyo; /* char y offset */
+ 	int mode; /* window state/mode flags */
+ 	int cursor; /* cursor style */
+ } TermWindow;
+@@ -1311,7 +1312,7 @@ xmakeglyphfontspecs(XftGlyphFontSpec *specs, const Glyph *glyphs, int len, int x
+ 	FcCharSet *fccharset;
+ 	int i, f, numspecs = 0;
+ 
+-	for (i = 0, xp = winx, yp = winy + font->ascent; i < len; ++i) {
++	for (i = 0, xp = winx, yp = winy + font->ascent + win.cyo; i < len; ++i) {
+ 		/* Fetch rune and mode for current glyph. */
+ 		rune = glyphs[i].u;
+ 		mode = glyphs[i].mode;
+@@ -1336,7 +1337,7 @@ xmakeglyphfontspecs(XftGlyphFontSpec *specs, const Glyph *glyphs, int len, int x
+ 				font = &dc.bfont;
+ 				frcflags = FRC_BOLD;
+ 			}
+-			yp = winy + font->ascent;
++			yp = winy + font->ascent + win.cyo;
+ 		}
+ 
+ 		/* Lookup character index with default font. */
+@@ -1549,12 +1550,12 @@ xdrawglyphfontspecs(const XftGlyphFontSpec *specs, Glyph base, int len, int x, i
+ 
+ 	/* Render underline and strikethrough. */
+ 	if (base.mode & ATTR_UNDERLINE) {
+-		XftDrawRect(xw.draw, fg, winx, winy + dc.font.ascent + 1,
++		XftDrawRect(xw.draw, fg, winx, winy + win.cyo + dc.font.ascent + 1,
+ 				width, 1);
+ 	}
+ 
+ 	if (base.mode & ATTR_STRUCK) {
+-		XftDrawRect(xw.draw, fg, winx, winy + 2 * dc.font.ascent / 3,
++		XftDrawRect(xw.draw, fg, winx, winy + win.cyo + 2 * dc.font.ascent / 3,
+ 				width, 1);
+ 	}
+ 
+-- 
+2.25.0
+
