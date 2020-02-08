@@ -201,6 +201,7 @@ static Shortcut shortcuts[] = {
 	{ ShiftMask ,           Button4,        kscrollup,      {.i =  mousescrollincrement} },
 	{ ShiftMask,            Button5,        kscrolldown,    {.i =  mousescrollincrement} },
 	{ MODKEY,               XK_Return,      newterm,        {.i =  0} },
+	{ MODKEY,               XK_l,           copyurl,        {.i =  0} },
 };
 
 /*
